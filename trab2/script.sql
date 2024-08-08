@@ -23,7 +23,8 @@ CREATE TABLE residencia (
     rua VARCHAR(100) NOT NULL,
     complemento VARCHAR(100),
     numero INT NOT NULL,
-    tamanho VARCHAR(10) CHECK (tamanho IN ('pequena', 'media', 'grande')),
+    tamanho INT NOT NULL,
+    FOREIGN KEY (tamanho) REFERENCES tamanho_residencia(id),
     FOREIGN KEY (responsavel_id) REFERENCES responsavel(id)
 );
 
@@ -183,18 +184,18 @@ INSERT INTO responsavel (cpf, nome) VALUES ('56789012345', 'Daniela Lima');
 INSERT INTO responsavel (cpf, nome) VALUES ('67890123456', 'Eduardo Santos');
 
 INSERT INTO residencia (responsavel_id, cidade, bairro, rua, complemento, numero, tamanho) 
-VALUES (1, 'São Paulo', 'Centro', 'Rua A', 'Apto 101', 123, 'pequena');
+VALUES (1, 'São Paulo', 'Centro', 'Rua A', 'Apto 101', 123, 1);
 INSERT INTO residencia (responsavel_id, cidade, bairro, rua, complemento, numero, tamanho) 
-VALUES (2, 'Rio de Janeiro', 'Copacabana', 'Rua B', '', 456, 'media');
+VALUES (2, 'Rio de Janeiro', 'Copacabana', 'Rua B', '', 456, 2);
 INSERT INTO residencia (responsavel_id, cidade, bairro, rua, complemento, numero, tamanho) 
-VALUES (3, 'Belo Horizonte', 'Savassi', 'Rua C', 'Casa', 789, 'grande');
+VALUES (3, 'Belo Horizonte', 'Savassi', 'Rua C', 'Casa', 789, 3);
 
 INSERT INTO precoFaxina (tamanho_residencia, preco, data_inicio, data_fim) 
-VALUES ('pequena', 100.00, '2024-01-01', NULL);
+VALUES (1, 100.00, '2024-01-01', NULL);
 INSERT INTO precoFaxina (tamanho_residencia, preco, data_inicio, data_fim) 
-VALUES ('media', 150.00, '2024-01-01', NULL);
+VALUES (2, 150.00, '2024-01-01', NULL);
 INSERT INTO precoFaxina (tamanho_residencia, preco, data_inicio, data_fim) 
-VALUES ('grande', 200.00, '2024-01-01', NULL);
+VALUES (3, 200.00, '2024-01-01', NULL);
 
 INSERT INTO faxina (diarista_id, residencia_id, data, foi_realizada, feedback, valor_pago) 
 VALUES (1, 1, '2024-02-01', TRUE, 'Excelente trabalho!', 100.00);
@@ -202,3 +203,7 @@ INSERT INTO faxina (diarista_id, residencia_id, data, foi_realizada, feedback, v
 VALUES (2, 2, '2024-02-02', TRUE, 'Muito bom, mas chegou atrasada.', 140.00);
 INSERT INTO faxina (diarista_id, residencia_id, data, foi_realizada, feedback, valor_pago) 
 VALUES (3, 3, '2024-02-03', FALSE, '', 0.00);
+
+INSERT INTO tamanho_residencia (tamanho) VALUES ('pequena');
+INSERT INTO tamanho_residencia (tamanho) VALUES ('media');
+INSERT INTO tamanho_residencia (tamanho) VALUES ('grande');
