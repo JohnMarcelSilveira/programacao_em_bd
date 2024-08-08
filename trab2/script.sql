@@ -15,6 +15,13 @@ CREATE TABLE responsavel(
     nome VARCHAR(100) NOT NULL,
     cpf CHAR(11) UNIQUE NOT NULL 
 );
+
+
+CREATE TABLE tamanho_residencia (
+    id SERIAL PRIMARY KEY,
+    tamanho VARCHAR(10) CHECK (tamanho IN ('pequena', 'media', 'grande'))
+);
+
 CREATE TABLE residencia (
     id SERIAL PRIMARY KEY,
     responsavel_id INT NOT NULL,
@@ -47,11 +54,6 @@ CREATE TABLE precoFaxina (
     data_fim DATE,
     tamanho_residencia INT NOT NULL,
     FOREIGN KEY (tamanho_residencia) REFERENCES tamanho_residencia(id)
-);
-
-CREATE TABLE tamanho_residencia (
-    id SERIAL PRIMARY KEY,
-    tamanho VARCHAR(10) CHECK (tamanho IN ('pequena', 'media', 'grande'))
 );
 
 CREATE OR REPLACE FUNCTION agendar_faxinas_data_limite(
@@ -183,6 +185,10 @@ INSERT INTO responsavel (cpf, nome) VALUES ('45678901234', 'Carlos Pereira');
 INSERT INTO responsavel (cpf, nome) VALUES ('56789012345', 'Daniela Lima');
 INSERT INTO responsavel (cpf, nome) VALUES ('67890123456', 'Eduardo Santos');
 
+INSERT INTO tamanho_residencia (tamanho) VALUES ('pequena');
+INSERT INTO tamanho_residencia (tamanho) VALUES ('media');
+INSERT INTO tamanho_residencia (tamanho) VALUES ('grande');
+
 INSERT INTO residencia (responsavel_id, cidade, bairro, rua, complemento, numero, tamanho) 
 VALUES (1, 'São Paulo', 'Centro', 'Rua A', 'Apto 101', 123, 1);
 INSERT INTO residencia (responsavel_id, cidade, bairro, rua, complemento, numero, tamanho) 
@@ -204,6 +210,3 @@ VALUES (2, 2, '2024-02-02', TRUE, 'Muito bom, mas chegou atrasada.', 140.00);
 INSERT INTO faxina (diarista_id, residencia_id, data, foi_realizada, feedback, valor_pago) 
 VALUES (3, 3, '2024-02-03', FALSE, '', 0.00);
 
-INSERT INTO tamanho_residencia (tamanho) VALUES ('pequena');
-INSERT INTO tamanho_residencia (tamanho) VALUES ('media');
-INSERT INTO tamanho_residencia (tamanho) VALUES ('grande');
