@@ -41,10 +41,16 @@ CREATE TABLE faxina (
 
 CREATE TABLE precoFaxina (
     id SERIAL PRIMARY KEY,
-    tamanho_residencia VARCHAR(10) CHECK (tamanho_residencia IN ('pequena', 'media', 'grande')),
     preco DECIMAL(10, 2) NOT NULL,
     data_inicio DATE NOT NULL,
-    data_fim DATE
+    data_fim DATE,
+    tamanho_residencia INT NOT NULL,
+    FOREIGN KEY (tamanho_residencia) REFERENCES tamanho_residencia(id)
+);
+
+CREATE TABLE tamanho_residencia (
+    id SERIAL PRIMARY KEY,
+    tamanho VARCHAR(10) CHECK (tamanho IN ('pequena', 'media', 'grande'))
 );
 
 CREATE OR REPLACE FUNCTION agendar_faxinas_data_limite(
